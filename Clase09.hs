@@ -97,71 +97,23 @@ where
 
     --esta es la versión del libro de tere del 9
 
-    mcdExt :: Int -> Int -> (Int , Int , Int)
-    mcdExt a b | b > a = mcdExt b a
-    mcdExt a 0 = (a, 1, 0)
-    mcdExt a b = (d, t, s - t * k)
+    mcdE :: Int -> Int -> (Int , Int , Int)
+    mcdE a b | b > a = mcdE b a
+    mcdE a 0 = (a, 1, 0)
+    mcdE a b = (d, t, s - t * k)
                 where (k, r) = (div a b, mod a b)
-                      (d, s, t) = mcdExt b r
+                      (d, s, t) = mcdE b r
     tercero (x,y,z)= z
     segundo (x,y,z)= y
 
     menorSAux :: Int-> Int -> Int -> (Int,Int)
-    menorSAux a b j | tercero (mcdExt a b ) -j*b' < 0 = (s,t)
-                    |otherwise= menorSAux a b (j+1)
-                    where t = segundo(mcdExt a b) - (j-1)*b'
-                          s = tercero (mcdExt a b) + (j-1)*a'
-                          b' = div b (mcd a b)
-                          a'= div a (mcd a b)
-
--- 1.1) Hacer una función que testee si es cierto que, dados tres enteros
---    positivos a, b y c, si a | c y b | c entonces a · b | c.
---
-    testearHip1 :: Int -> Int -> Int -> Bool
-    testearHip1 a b c | mod c a + mod c b == 0= mod c (a*b) == 0
-                      |otherwise= True
-
-
--- 1.2) Hacer una función que lo testee para todos los posibles enteros 
---    positivos menores que tres valores dados.
-
-    testearHip2:: Int ->   Int -> Int -> Bool
-    vtestearHip2 _ _ 1 = True
-    testearHip2 _ 0 _ = True
-    testearHip2 0 _ _ = True 
-    testearHip2 a b c =testearHip2 a b c && testearHip2 (a-1) b c && testearHip2 a (b-1) c && testearHip2 a b (c-1) 
-
-
--- 1.3) Hacer una función tal que si hipótesis es falsa, devuelva un
---      trio de valores que la falsifique.
-
--- [0,1] 2 <---> (10)_{2} = 2 = 2^1 * 1 + 2^0 * 0
--- (20)_{10} <---> [0,2] 10
-
--- 2) Suponiendo la representación de números en base b descripta en el video,
---    hacer un incrementador, es decir, una función con la siguiente signatura
---      inc :: Int -> [Int] -> [Int]
---    donde inc b l es la representación en base b del siguiente del natural 
---    representado por l en la misma base.
---    Ejemplos: 
---      inc 2 [0,1] = [1,1]
---      inc 2 [1,1] = [0,0,1]
-
--- 3) [Opcional] Asumiendo la misma representación, definir la función
---      sumar :: Int -> [Int] -> [Int] -> [Int]
---    tal que 
---     sumar b l1 l2 = digitos ((numero l1 b) + (numero l2 b)) b
---    Ejemplo:
---     sumar 2 [0,1] [0,1] = [0,0,1]
-
--- 4) Dados a y b dos enteros positivos, coprimos entre sí, ¿qué valores puede tomar (2a+b : 3a-2b)?
--- 
--- 4.1) Escribir una función que calcule (2a+b : 3a-2b) dados a y b.
---
--- 4.2) Escibir una función tal que para cualquier par de enteros positivos coprimos menores que a y b dados devuelva cuáles son los distintos valores que puede tomar (2a+b : 3a-2b).
---      todosLosMCD :: Int -> Int -> [Int]
-
-
+    menorSAux a b j |tercero (mcdE a b ) -j*b' < 0 = (s,t)
+                    |otherwise = menorSAux a b (j+1)
+                       where s = segundo(mcdE a b) - (j-1)*b'
+                             t = tercero (mcdE a b) + (j-1)*a'
+                             b'= div b (mcd a b)
+                             a'= div a (mcd a b)
+    menorS a b = menorSAux a b 1
 
 
 
